@@ -1,3 +1,5 @@
+require_relative 'queue.rb'
+
 class Tree
   attr_accessor :payload, :children
 
@@ -8,16 +10,34 @@ class Tree
 
 end
 
-# The "leaves" of the tree (they have no children)
-deep_fifth_node = Tree.new(5, [])
-eleventh_node = Tree.new(11, [])
-fourth_node = Tree.new(4, [])
 
-# The "branches" of the tree
-ninth_node = Tree.new(9, [fourth_node])
-sixth_node = Tree.new(6, [deep_fifth_node, eleventh_node])
-seventh_node = Tree.new(7, [sixth_node])
-shallow_fifth_node = Tree.new(5, [ninth_node])
 
-# The "trunk" of the tree
-trunk = Tree.new(2, [seventh_node, shallow_fifth_node])
+def depthSearch(tree, value)
+  return tree if tree.payload == value
+
+  tree.children.each do |child|
+    var = depthSearch(child, value)
+    return var if var != nil
+  end
+
+  return nil
+end
+
+
+def breadthSearch(tree, value)
+  return tree if tree.payload == value
+  queue = Queue.new
+
+  tree.children.each do |child|
+    queue.enqueue(child)
+  end
+
+  until queue == nil
+    node = queue.dequeue
+    return node if node.payload == value
+    node.children.each do |child|
+      queue.enqueue(child)
+    end
+  end
+  
+end
