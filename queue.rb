@@ -12,4 +12,8 @@ class Queue
   def dequeue
     @queue.shift
   end
+
+  def empty?
+    @queue == []
+  end
 end

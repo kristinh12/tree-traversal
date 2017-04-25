@@ -8,36 +8,32 @@ class Tree
     @children = children
   end
 
-end
+  def depthSearch(value)
+    return self if @payload == value
 
-
-
-def depthSearch(tree, value)
-  return tree if tree.payload == value
-
-  tree.children.each do |child|
-    var = depthSearch(child, value)
-    return var if var != nil
-  end
-
-  return nil
-end
-
-
-def breadthSearch(tree, value)
-  return tree if tree.payload == value
-  queue = Queue.new
-
-  tree.children.each do |child|
-    queue.enqueue(child)
-  end
-
-  until queue == nil
-    node = queue.dequeue
-    return node if node.payload == value
-    node.children.each do |child|
-      queue.enqueue(child)
+    @children.each do |child|
+      var = child.depthSearch(value)
+      return var if var != nil
     end
+
+    return nil
   end
-  
+
+  def breadthSearch(value)
+    queue = Queue.new
+    queue.enqueue(self)
+    
+    # Starts to remove "children" from the queue.
+    # When removed, it adds any of that node's children to the queue.
+    until queue.empty?
+      node = queue.dequeue
+      return node if node.payload == value
+      node.children.each do |child|
+        queue.enqueue(child)
+      end
+    end
+
+    return nil
+    end
+
 end
